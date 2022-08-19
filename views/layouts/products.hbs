@@ -1,0 +1,19 @@
+<div class="container">
+    {{#if listExist}}
+    <div class="d-flex p-2 bd-highlight flex-wrap">
+        {{#each list}}
+        <div class="card " style="width: 12rem; margin: 1rem">
+            <img src="{{image}}" class="card-img-top" alt="{{image}}">
+            <div class="card-body">
+                <h5 class="card-title">{{title}}</h5>
+                <p class="card-text">$ {{price}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <div class="d-flex p-2 bd-highlight flex-wrap">
+        <h1>No se encontraron elementos</h1>
+    </div>
+    {{/if}}
+</div>
