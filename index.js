@@ -10,7 +10,7 @@ const io = new IOServer (httpServer);
 const {Container} = require('./container');
 const {Container : ContainerMsg} = require('./containerMsg')
 
-app.use(express.static('/public'));
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }))
 const PORT = 8080 || process.env.PORT;
 
