@@ -44,7 +44,7 @@ class Container {
             const content = await fs.promises.readFile(this.name, 'utf8');
             const contentObj = JSON.parse(content);
             console.log('Show all products');
-            console.log(contentObj);
+            //console.log(contentObj);
             return contentObj;
         }
         catch(err) {

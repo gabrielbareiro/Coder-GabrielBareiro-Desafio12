@@ -1,0 +1,20 @@
+[
+  {
+    "email": "minimalposadas@gmail.com",
+    "hora": "23:43:36",
+    "msg": "hola",
+    "id": 2
+  },
+  {
+    "email": "minimalposadas@gmail.com",
+    "hora": "23:58:11",
+    "msg": "prueba",
+    "id": 2
+  },
+  {
+    "email": "soygabrielbar@gmail.com",
+    "hora": "00:03:07",
+    "msg": "hola desde edge",
+    "id": 3
+  }
+]

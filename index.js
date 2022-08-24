@@ -1,19 +1,25 @@
 const express = require('express');
-const handlebars = require("express-handlebars");
 const app = express();
-const {Container} = require('./container')
+const handlebars = require("express-handlebars");
 
+const {Server : HttpServer} = require ('http');
+const {Server : IOServer} = require ('socket.io');
+const httpServer = new HttpServer(app);
+const io = new IOServer (httpServer);
 
+const {Container} = require('./container');
+const {Container : ContainerMsg} = require('./containerMsg')
+
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }))
 const PORT = 8080 || process.env.PORT;
 
-
+const containerMensajes = new ContainerMsg('./data/mensajes.txt')
 const containerProducts = new Container('./data/products.txt')
 
 app.set("view engine", "hbs");
 app.set("views", "./views/layouts");
 
-app.use(express.static("public"));
 
 app.engine(
 	"hbs",
@@ -51,8 +57,34 @@ app.post("/productos", async (req, res) => {
 	res.redirect("/productos");
 });
 
+//web sockets
 
-app.listen(8080, err => {
+
+io.on ('connection',async socket => {
+	let chat = await containerMensajes.getAll();
+	console.log ('a user connected');
+	//console.log (chat)
+	const mensaje = {
+		mensaje: 'ok',
+		chat
+	};
+	
+	socket.emit('mensaje-server', mensaje);
+
+	socket.on('mensaje-nuevo', async (mens) =>{
+		console.log(mens)
+		chat.push(mens);
+		console.log(chat)
+		const mensaje = {
+			mensaje: "nuevo mensaje",
+			chat
+		}
+		io.sockets.emit('mensaje-server', mensaje);
+		await containerMensajes.save(mens)
+	})
+});
+
+httpServer.listen(8080, err => {
     if(err) throw new Error (`Error on server: ${err}`);
     console.log(`Server is running on port: ${PORT}`);
 })

@@ -2,12 +2,12 @@
     {{#if listExist}}
     <div class="d-flex p-2 bd-highlight flex-wrap">
         {{#each list}}
-        <div class="card " style="width: 12rem; margin: 1rem">
+        <div class="card " style="width: 8rem; margin: 1rem">
             <img src="{{image}}" class="card-img-top" alt="{{image}}">
             <div class="card-body">
-                <h5 class="card-title">{{title}}</h5>
-                <p class="card-text">$ {{price}}</p>
+                <p class="card-title fs-6">{{title}}</p>
             </div>
+            <p class="card-text text-center">$ {{price}}</p>
         </div>
         {{/each}}
     </div>
