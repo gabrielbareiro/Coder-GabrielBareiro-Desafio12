@@ -10,7 +10,7 @@ const io = new IOServer (httpServer);
 const {Container} = require('./container');
 const {Container : ContainerMsg} = require('./containerMsg')
 
-app.use(express.static("public"));
+app.use(express.static('/public'));
 app.use(express.urlencoded({ extended: true }))
 const PORT = 8080 || process.env.PORT;
 
@@ -60,27 +60,28 @@ app.post("/productos", async (req, res) => {
 //web sockets
 
 
-io.on ('connection',async socket => {
+io.on('connection', async socket => {
 	let chat = await containerMensajes.getAll();
-	console.log ('a user connected');
-	//console.log (chat)
+	console.log('a user connected');
 	const mensaje = {
 		mensaje: 'ok',
 		chat
 	};
-	
+
 	socket.emit('mensaje-server', mensaje);
 
-	socket.on('mensaje-nuevo', async (mens) =>{
-		console.log(mens)
-		chat.push(mens);
-		console.log(chat)
-		const mensaje = {
-			mensaje: "nuevo mensaje",
-			chat
+	socket.on('mensaje-nuevo', async (mens) => {
+		if (mens.email !== '') {
+			chat.push(mens)
+			const mensaje = {
+				mensaje: "nuevo mensaje",
+				chat
+			}
+			io.sockets.emit('mensaje-server', mensaje);
+			await containerMensajes.save(mens)
+		} else {
+			console.log('email vacio')
 		}
-		io.sockets.emit('mensaje-server', mensaje);
-		await containerMensajes.save(mens)
 	})
 });
 
